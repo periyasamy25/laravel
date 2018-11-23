@@ -1,0 +1,632 @@
+
+1.composer global require "laravel/installer"  (https://laravel.com/docs/5.5/installation)
+
+2.laravel new project_name & cd project_path
+
+3.php -r "copy('.env.example', '.env');"
+
+4.Change DB settings in .env file
+
+5.Run php artisan key:generate
+
+6.php artisan serve will run project in this url http://127.0.0.1:8000/ (optional)
+
+7.For permissions run the following command 
+	sudo chown -R www-data:www-data /var/www/project/
+	sudo usermod -a -G www-data ubuntu_username
+	sudo chown -R ubuntu_username:www-data /var/www/project/
+	sudo find /var/www/project/ -type f -exec chmod 664 {} \; &&
+	sudo find /var/www/project/ -type d -exec chmod 775 {} \; &&
+	sudo chgrp -R www-data storage /var/www/project/bootstrap/cache &&
+	sudo chmod -R ug+rwx storage /var/www/project/bootstrap/cache
+
+8.For adding default laravel authentication run (https://laravel.com/docs/5.5/authentication)
+	php artisan make:auth
+
+9.For migarting default laravel tables run
+	php artisan migrate
+
+10.For setting virtualhost in ubuntu add the following in /etc/apache2/sites-enabled/000-default.conf
+
+	<VirtualHost *:80>
+		ServerName api_laravel.dev
+		DocumentRoot /var/www/api_laravel.dev
+		<Directory /var/www/api_laravel.dev/>
+		Options FollowSymLinks
+		AllowOverride All
+		Order allow,deny
+		allow from all
+		</Directory>
+	</VirtualHost>
+
+and add the following in /etc/hosts
+	127.0.0.1   api_laravel.dev
+
+11.
+
+
+sudo systemctl stop apache2.service 
+sudo systemctl start apache2.service 
+sudo systemctl stop nginx.service 
+
+define('FS_METHOD', 'direct'); // wordpress install themes directly wp_config 
+
+php-cs-fixer fix  /var/www/Ideahelix/application/controllers 
+php -r "copy('.env.example', '.env');" 
+
+/*************************** Laravel Installation **************************/
+composer create-project laravel/laravel rightcomply_laravel "5.4"
+/*************************** Laravel Installation **************************/
+
+/************************************ Git **********************************/
+git reset --hard HEAD~1 
+The HEAD~1 means the commit before head.Or, you could look at the output of git log, find the commit id of the commit you want to back up to, and then do this: 
+git reset --hard <sha1-commit-id> 
+If you already pushed it, you will need to do a force push to get rid of it... 
+
+git push origin HEAD --force 
+git update-index --assume-unchanged lib/config.php 
+git update-index --no-assume-unchanged lib/config.php 
+/*************************** git **************************/
+
+/*************************** Beanstalkd & Laravel **************************/
+sudo apt-get install beanstalkd
+
+sudo service beanstalkd start
+
+systemctl status beanstalkd.socket
+
+composer require pda/pheanstalk
+
+sudo subl /etc/supervisor/conf.d/myqueue.conf
+
+[program:doc_expiry_notification]
+command=php artisan queue:listen --queue=doc_expiry_notification --tries=3 --env=local
+process_name=%(program_name)s_%(process_num)02d
+directory=/var/www/rightcomply/
+stdout_logfile=/var/www/rightcomply/storage/logs/doc_expiry_notification.log
+redirect_stderr=true
+autostart=true
+autorestart=true
+numprocs=3
+
+pullQueue_supervisord.log
+pushQueue_supervisord_pushQueue.log
+
+php artisan config:cache
+php artisan cache:clear && php artisan config:clear && php artisan clear-compiled && php artisan queue:restart
+
+sudo supervisorctl add send_customers_to_emma
+sudo supervisorctl status
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl reload
+sudo supervisorctl restart all
+
+php artisan queue:failed-table
+php artisan migrate
+
+echo "" > /app/storage/logs/laravel.log
+
+composer create-project ptrofimov/beanstalk_console -s dev beanstalkd_console/
+sudo chmod -R 777 beanstalkd_console/
+
+sudo chown -R www-data:www-data /var/www/beanstalkd_console/ &&
+sudo usermod -a -G www-data periyasamy &&
+sudo chown -R periyasamy:www-data /var/www/beanstalkd_console/ &&
+sudo find /var/www/beanstalkd_console/ -type f -exec chmod 664 {} \; &&
+sudo find /var/www/beanstalkd_console/ -type d -exec chmod 775 {} \;
+
+sudo chown -R www-data:www-data /var/www/beanstalkd_console/ &&
+sudo chown -R www-data:www-data /var/www/beanstalkd_console/ &&
+sudo find /var/www/beanstalkd_console/ -type f -exec chmod 664 {} \; &&
+sudo find /var/www/beanstalkd_console/ -type d -exec chmod 775 {} \;
+
+sudo chown -R www-data:www-data /var/www/laravel_rightcomply/
+sudo usermod -a -G www-data centos
+sudo chown -R centos:www-data /var/www/laravel_rightcomply/
+sudo find /var/www/laravel_rightcomply/ -type f -exec chmod 664 {} \; &&
+sudo find /var/www/laravel_rightcomply/ -type d -exec chmod 775 {} \; &&
+sudo chgrp -R www-data storage /var/www/laravel_rightcomply/bootstrap/cache &&
+sudo chmod -R ug+rwx storage /var/www/laravel_rightcomply/bootstrap/cache
+
+$HOME/.composer/vendor/bin/php-cs-fixer
+alias php-cs-fixer=$HOME/.composer/vendor/bin/php-cs-fixer
+export PATH="$PATH:~/.composer/vendor/bin"
+source ~/.bashrc
+{
+    "shell_cmd": "/home/rightcomply/.composer/vendor/bin/php-cs-fixer fix $file --rules=@PSR2"
+}
+
+//Ubuntu
+sudo chown -R www-data:www-data /var/www/html/rc_laravel/
+sudo usermod -a -G www-data rightcomply
+sudo chown -R rightcomply:www-data /var/www/html/rc_laravel/
+sudo find /var/www/html/rc_laravel/ -type f -exec chmod 664 {} \; &&
+sudo find /var/www/html/rc_laravel/ -type d -exec chmod 775 {} \; &&
+sudo chgrp -R www-data storage /var/www/html/rc_laravel/bootstrap/cache &&
+sudo chmod -R ug+rwx storage /var/www/html/rc_laravel/bootstrap/cache
+
+//Centos
+sudo chown -R apache:apache /var/www/laravel_rightcomply/
+sudo usermod -a -G apache centos
+sudo chown -R centos:apache /var/www/laravel_rightcomply/
+sudo find /var/www/laravel_rightcomply/ -type f -exec chmod 664 {} \; &&
+sudo find /var/www/laravel_rightcomply/ -type d -exec chmod 775 {} \; &&
+sudo chgrp -R apache storage /var/www/laravel_rightcomply/bootstrap/cache &&
+sudo chmod -R ug+rwx storage /var/www/laravel_rightcomply/bootstrap/cache
+
+
+https://laracasts.com/discuss/channels/laravel/install-laravel-on-digitalocean-by-lamp
+
+https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-16-04
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-password-authentication-with-apache-on-ubuntu-14-04
+
+https://www.digitalocean.com/community/tutorials/how-to-create-a-new-user-and-grant-permissions-in-mysql
+
+sudo vi /etc/apache2/apache2.conf
+
+add the line below at the bottom
+>>>Include /etc/phpmyadmin/apache.conf
+
+php artisan cache:clear && php artisan config:clear && php artisan clear-compiled && php artisan queue:restart
+
+http://php.net/manual/en/function.ssh2-sftp.php
+/*************************** Beanstalkd **************************/
+
+Route::middleware(['auth', 'employer'])->group(function () {
+  Route::get('/employees/{name?}', function ($name = 'all') {
+      return App::call('\App\Http\Controllers\EmployerController@employees', ['name' => $name]);
+  })->where('name', 'all|recent|compliant|non_complaint|critical');
+});
+
+Route::get('/employees2/{name?}', function ($name = 'all') {
+  $controller = new \App\Http\Controllers\EmployerController;
+
+    return $controller->employees($name);
+//    return App::call('\App\Http\Controllers\EmployerController@employees', ['name' => $name]);
+})->where('name', 'all|recent|compliant|non_complaint|critical');
+
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer
+composer global require friendsofphp/php-cs-fixer
+{
+    "shell_cmd": "php-cs-fixer fix $file --rules=@PSR2"
+}
+
+rawurlencode()
+
+$ip = $_SERVER['REMOTE_ADDR']?:($_SERVER['HTTP_X_FORWARDED_FOR']?:$_SERVER['HTTP_CLIENT_IP']);
+
+<VirtualHost *:80>
+        ServerName laradev.rightcomply.com
+        ServerAdmin periyasamy@rightcomply.com
+
+        DocumentRoot "/var/www/laravel_rightcomply/public"
+
+        <Directory "/var/www/laravel_rightcomply/">
+                Options -Indexes FollowSymLinks
+                RewriteEngine On
+
+                # Only rewrite if no file exists
+                RewriteCond %{SCRIPT_FILENAME} !-f
+                RewriteCond %{SCRIPT_FILENAME} !-d
+                RewriteRule ^(.*)$ /index.php
+
+                <Files sitemap.xml>
+                        RewriteEngine Off
+                </Files>
+        </Directory>
+
+        <Files "xmlrpc.php">
+        Order Allow,Deny
+        deny from all
+        </Files>
+
+        <Location />
+                SetOutputFilter DEFLATE
+                # compress text, html, javascript, css, xml:
+                AddOutputFilterByType DEFLATE text/plain
+                AddOutputFilterByType DEFLATE text/html
+                AddOutputFilterByType DEFLATE text/xml
+                AddOutputFilterByType DEFLATE text/css
+                AddOutputFilterByType DEFLATE application/xml
+                AddOutputFilterByType DEFLATE application/xhtml+xml
+                AddOutputFilterByType DEFLATE application/rss+xml
+                AddOutputFilterByType DEFLATE application/javascript
+                AddOutputFilterByType DEFLATE application/x-javascript
+
+        </Location>
+        CustomLog logs/laradev.rightcomply.com-access.log combined
+        ErrorLog logs/laradev.rightcomply.com-error.log
+
+</VirtualHost>
+
+<?php $next_year = date('Y', strtotime('+1 year'));?>
+
+<div class="input-group date expiry_datepicker" data-date="06/15/<?php echo $next_year;?>">
+    <input type="text" id="workpermit_expiry" name="permit_expiry" placeholder="Permit Expiry Date" class="form-control clr-blue input-fld" readonly>
+    <div class="input-group-addon" style="cursor:pointer;">
+        <span title="Permit Expiry Date" class="fa fa-lg fa-calendar-plus-o text-danger"></span>
+    </div>
+</div>
+
+<div class="input-group date issue_datepicker">
+  <input type="text" id="photoissue_date" name="photoissue" placeholder="Issue Date" class="form-control clr-blue input-fld" readonly>
+  <div class="input-group-addon" style="cursor:pointer;">
+    <span title="Issue Date" class="fa fa-lg fa-calendar-plus-o text-danger"></span>
+  </div>
+</div>
+
+<script>
+$(document).ready(function () {
+    $('.expiry_datepicker').datepicker({
+        format: "mm/dd/yyyy",
+        autoclose:true,
+        startDate:"-2y",
+    });
+
+    $('.issue_datepicker').datepicker({
+        format: "mm/dd/yyyy",
+        autoclose:true,
+        startDate:"-45y",
+        endDate:"-1d",
+    });
+});
+</script>
+
+<VirtualHost *:80>
+        ServerName v2.2.rightcomply.com
+        ServerAdmin periyasamy@rightcomply.com
+
+        DocumentRoot "/var/www/v2.2.rightcomply/"
+
+        <Directory "/var/www/v2.2.rightcomply/">
+                Options -Indexes FollowSymLinks
+ 
+                AllowOverride All
+        </Directory>
+
+        <Location />
+                SetOutputFilter DEFLATE
+                # compress text, html, javascript, css, xml:
+                AddOutputFilterByType DEFLATE text/plain
+                AddOutputFilterByType DEFLATE text/html
+                AddOutputFilterByType DEFLATE text/xml
+                AddOutputFilterByType DEFLATE text/css
+                AddOutputFilterByType DEFLATE application/xml
+                AddOutputFilterByType DEFLATE application/xhtml+xml
+                AddOutputFilterByType DEFLATE application/rss+xml
+                AddOutputFilterByType DEFLATE application/javascript
+                AddOutputFilterByType DEFLATE application/x-javascript
+
+        </Location>
+        CustomLog logs/v2.2.rightcomply.com-access.log combined
+        ErrorLog logs/v2.2.rightcomply.com-error.log
+</VirtualHost>
+
+/*$employees = DB::table('roles')
+                    ->join('model_has_roles', 'model_has_roles.role_id', '=', 'roles.id')
+                    ->join('users', 'users.id', '=', 'model_has_roles.user_id')
+                    ->join('employee_details', 'users.id', '=', 'employee_details.user_id')
+                    ->join('customers', 'customers.vol_customer_id', '=', 'order_details.vol_customer_id')
+                    ->select('order_details.*', 'customers.email')
+                    ->where('roles.name', 'employee')
+                    ->where('orders.account_id', $this->account->id)
+                    ->where('customers.account_id', $this->account->id)
+                    ->where('orders.order_updated', 0)
+                    ->where('order_details.existing_sync', 1)
+                    ->limit($send_limit)
+                    ->get();*/
+
+echo "" > /app/storage/logs/laravel.log
+
+//echo Carbon::now()->format('Y-m-d H:i:s');
+        //dd('sf');
+        /*dd(Carbon::now('America/Halifax')->dst);
+        var_dump(Carbon::now('America/Chicago'));
+        var_dump(Carbon::now('America/Halifax'));
+        var_dump(Carbon::now('America/Caracas'));
+        dd(Carbon::now('-4'));*/
+        //dd(Carbon::now(-6)->tzName);
+
+        //dd(date_create('5/4/2017 2:23:00 PM')->format('Y-m-d H:i:s'));
+        //dd(date_create('5/4/2017 2:23:00 PM')->format('Y-m-d h:i:s A'));
+        //dd(date_create('2017-05-04 02:23:00 PM')->format('m/d/Y h:i:s A'));
+        /*$date = new \DateTime('5/4/2017 5:48:00 AM', new \DateTimeZone('America/Chicago'));
+        echo $date->format('Y-m-d H:i:s') . "<br/>";
+
+        $date->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+        echo $date->format('Y-m-d H:i:s') . "\n";
+        */
+
+https://app.pluralsight.com/library/courses/agile-team-practice-fundamentals/table-of-contents
+https://app.pluralsight.com/library/courses/leadership-communication-software-engineers/table-of-contents
+https://app.pluralsight.com/library/courses/crisis-communication-technology-colleagues/table-of-contents
+https://app.pluralsight.com/library/courses/object-oriented-php-essential-constructs/table-of-contents
+https://app.pluralsight.com/library/courses/php-7-whats-new/table-of-contents
+https://app.pluralsight.com/library/courses/object-oriented-php-classical-inheritance-model/table-of-contents
+https://app.pluralsight.com/library/courses/php-highly-performant/table-of-contents
+
+https://www.freecoursesonline.us/tag/ethical-hacking-ceh-prep/
+https://www.freecoursesonline.us/laracasts-whats-new-in-laravel-5-5/
+https://www.freecoursesonline.us/laracasts-learn-redis-through-examples/
+https://www.freecoursesonline.us/courses/phlearn/
+
+https://www.toptal.com/laravel/restful-laravel-api-tutorial
+
+https://learninglaravel.net/tags/tutorials
+
+https://laravel-news.com/two-best-roles-permissions-packages
+
+https://github.com/spatie/laravel-permission
+https://hackernoon.com/eloquent-relationships-cheat-sheet-5155498c209
+
+There's a quote I like. History repeats itself twice. The first time it's a mistake, the second time it's a farce.
+
+http://www.expertphp.in/article/laravel-5-4-user-role-and-permissions-with-spatie-laravel-permission
+
+https://scotch.io/tutorials/user-authorization-in-laravel-54-with-spatie-laravel-permission
+
+http://www.qcode.in/easy-roles-and-permissions-in-laravel-5-4/
+
+https://github.com/LaravelDaily/laravel-roles-permissions-manager
+
+https://app.pluralsight.com/library/courses/mysql-query-optimization-performance-tuning/table-of-contents
+https://app.pluralsight.com/library/courses/mysql-indexing-performance/table-of-contents
+https://app.pluralsight.com/player?course=monitoring-mysql-performance-schema&author=pinal-dave&name=monitoring-mysql-performance-schema-m2&clip=7&mode=live
+
+https://jewelhuq.wordpress.com/2017/10/12/quickbook-api-integration-using-laravel/
+
+https://github.com/consolibyte/quickbooks-php
+
+https://stackoverflow.com/questions/29544283/laravel-5-and-quickbooks
+
+https://laracasts.com/discuss/channels/general-discussion/quickbooks-integration-with-laravel-procedural-library
+
+http://developed.be/2013/08/21/laravel-naming-conventions/
+
+https://laravel-tricks.com/tricks/multiple-pagination-with-laravel-2-pagination-in-1-page
+
+https://stackoverflow.com/questions/24086269/laravel-multiple-pagination-in-one-page/25553245#25553245
+
+
+![Laravel](https://laravel.com/assets/img/components/logo-laravel.svg)
+
+[![Build Status](https://travis-ci.org/laravel/framework.svg)][id]
+[id]:https://travis-ci.org/laravel/framework "Build Status"
+
+https://github.com/FriendsOfPHP/PHP-CS-Fixer
+composer global require friendsofphp/php-cs-fixer
+{
+    "shell_cmd": "php-cs-fixer fix $file --rules=@PSR2"
+}
+
+//Uppercase
+https://gist.github.com/Michael-Brooks/fbbba105cd816ef5c016
+
+rawurlencode()
+
+
+https://www.freetutorials.eu/real-world-asp-net-web-api-services-for-net-framework/
+https://www.freetutorials.eu/data-structures-and-algorithms-through-python-in-depth/
+https://www.freetutorials.eu/learn-to-code-by-making-games-complete-c-unity-developer-6/
+https://www.freetutorials.eu/complete-c-unity-developer-3d-learn-to-code-making-games/
+https://www.freetutorials.eu/angular-4-formerly-angular-2-the-complete-guide-24/
+https://www.freetutorials.eu/react-16-the-complete-guide-incl-react-router-4-redux-2/
+https://www.freetutorials.eu/mongodb-the-complete-developers-guide/
+https://www.freetutorials.eu/create-a-google-search-engine-clone-from-scratch-php-mysql/
+https://www.freetutorials.eu/aws-certified-developer-associate-2017-1/
+https://www.freetutorials.eu/docker-and-kubernetes-the-complete-guide/
+https://www.freetutorials.eu/the-web-developer-bootcamp-2/
+https://www.freetutorials.eu/understanding-typescript-4/
+https://www.freetutorials.eu/the-advanced-web-developer-bootcamp/
+https://www.freetutorials.eu/projects-in-machine-learning-beginner-to-professional/
+https://www.freetutorials.eu/machine-learning-a-z-hands-on-python-r-in-data-science-5/
+https://www.freetutorials.eu/complete-python-bootcamp-go-from-zero-to-hero-in-python-3-3/
+https://www.freetutorials.eu/angular-angular-2-or-4-nodejs-the-mean-stack-guide-4/
+https://www.freetutorials.eu/the-complete-react-native-and-redux-course-2/
+https://www.freetutorials.eu/the-complete-node-js-developer-course-2nd-edition-3/
+https://www.freetutorials.eu/modern-react-with-redux-3/
+https://www.freetutorials.eu/learn-ethical-hacking-from-scratch-4/
+https://www.freetutorials.eu/kali-linux-tutorial-for-beginners-1/
+https://www.freetutorials.eu/artificial-intelligence-2018-build-the-most-powerful-ai-1/
+https://www.freetutorials.eu/deep-learning-convolutional-neural-networks-in-python-4/
+https://www.freetutorials.eu/aquaponic-gardening-growing-fish-and-vegetables-together/
+https://www.freetutorials.eu/build-an-app-with-aspnet-core-and-angular-from-scratch-2/
+https://www.freetutorials.eu/advanced-react-and-redux-3/
+https://www.freetutorials.eu/nginx-fundamentals-high-performance-servers-from-scratch/
+https://www.freetutorials.eu/hands-on-natural-language-processing-nlp-using-python/
+https://www.freetutorials.eu/react-front-to-back/
+https://www.freetutorials.eu/learn-python-ethical-hacking-from-scratch-1/
+https://www.freecoursesonline.me/laracasts-testing-vue-2/
+https://www.freecoursesonline.me/pluralsight-building-a-site-with-angularjs-and-php/
+https://www.freecoursesonline.me/pluralsight-building-a-site-with-angular-and-php/
+https://www.freecoursesonline.me/laracasts-learn-vue-2-step-by-step/
+https://www.freecoursesonline.me/laracasts-learn-laravel-mix/
+
+https://laracasts.com/series/laravel-from-scratch-2018
+https://laracasts.com/series/php-for-beginners
+https://laracasts.com/series/whats-new-in-php-7-1
+https://laracasts.com/series/solid-principles-in-php
+https://laracasts.com/series/php7-up-and-running
+https://laracasts.com/series/how-to-build-command-line-apps-in-php
+https://laracasts.com/series/whats-new-in-laravel-5-6
+https://laracasts.com/series/whats-new-in-laravel-5-7
+https://laracasts.com/series/professional-php-workflow-in-sublime-text
+https://laracasts.com/series/laravel-spark
+https://laracasts.com/series/envoyer
+https://laracasts.com/series/learn-laravel-forge
+https://laracasts.com/series/git-me-some-version-control
+
+
+document.getElementsByName('video')[0].src
+
+https://fossbytes.com/getting-pluralsight-subscription-for-free-for-6-months/
+
+Schema::table('persons', function (Blueprint $table) {
+    $sm = Schema::getConnection()->getDoctrineSchemaManager();
+    $indexesFound = $sm->listTableIndexes('persons');
+
+    if(array_key_exists("persons_body_unique", $indexesFound))
+        $table->dropUnique("persons_body_unique");
+})
+
+-Clevel
+CEO
+CIO
+CTO
+VP HR
+HR HEAD
+
+-Manager level
+HR ADMIN
+HR MANAGER
+DEPT LEAD
+MANAGER
+TEAD LEAD
+IT LEAD
+
+http://isaidub.net/tamil-fantasy-dubbed-movies.html
+https://www.quora.com/Which-are-other-sites-like-dream11
+https://dir.indiamart.com/impcat/solar-powered-car.html
+user_has_roles
+role_has_permissions
+user_has_permissions
+
+PROJECT DETAILS
+Project id
+User id
+Company id
+LCAid
+Client id
+Job title
+Project Name
+Client project Code
+Location
+Start date (Date the contract started)
+End date
+Note
+Joining date (Actual joining date)
+Project status
+Created by
+Created On
+Updated On
+
+http://www.btsdumaroc.tk/2018/02/laravel-55-ajax-tutorial-advanced-crud.html
+http://www.expertphp.in/article/how-to-add-automatically-query-string-to-laravel-pagination-links
+https://laracasts.com/discuss/channels/laravel/filtered-data-with-pagination
+
+https://itsolutionstuff.com/post/laravel-56-dynamic-ajax-autocomplete-using-vuejsexample.html
+https://appdividend.com/2018/04/27/laravel-typeahead-search-tutorial-with-example/
+https://barryvanveen.nl/blog/46-improving-the-performance-of-spatie-laravel-permission?utm_source=learninglaravel&utm_medium=links&utm_campaign=46-improving-the-performance
+https://www.5balloons.info/multi-page-step-form-in-laravel-with-validation/
+https://www.5balloons.info/fix-laravel-5-login-page-redirects-home-logged-users/
+https://learninglaravel.net/laravel-html2pdf
+https://pineco.de/basic-eloquent-search-techniques/
+http://laravel-bap.com/laravel-model-caching-performance-boost/
+http://laravel-bap.com/14-laravel-performance-tips-and-ideas-for-2018/
+https://itsolutionstuff.com/post/php-laravel-56-rest-api-with-passport-tutorialexample.html
+https://learninglaravel.net/social-auto-posting-by-toolkitolarasap-laravel-package
+https://kpktechnology.com/block-ip-address-accessing-laravel-application/
+http://www.phpzone.in/laravel-5-4-api-authentication-using-jwt-example/
+https://itsolutionstuff.com/post/laravel-5-mongodb-crud-tutorialexample.html
+
+https://www.freetutorials.us/thoughtful-web-development-course-html-vue-js-php-mysql/
+
+https://www.freetutorials.us/learn-jira-with-real-world-examples-confluence-bonus/
+https://www.freetutorials.us/2018-career-hacking-resume-linkedin-interviewing-more/
+https://www.freetutorials.us/complete-english-course-english-speaking-english-grammar-2/
+https://www.freetutorials.us/1-english-vocabulary-launch-upgrade-your-speaking/
+https://www.freetutorials.us/1-english-grammar-launch-upgrade-your-speaking-and-listening-1/
+https://www.freetutorials.us/1-advanced-css-and-sass-take-your-css-to-the-next-level/
+https://www.freetutorials.us/network-hacking-continued-intermediate-to-advanced-1/
+https://www.freetutorials.us/artificial-intelligence-a-z-learn-how-to-build-an-ai-udemy-free-download-2/
+https://www.freetutorials.us/python-for-offensive-pentest-a-complete-practical-course-2/
+https://www.freetutorials.us/1-become-a-superlearner-v2-learn-speed-reading-boost-memory-7/
+https://www.freetutorials.us/critical-thinker-academy-learn-to-think-like-a-philosopher-1/
+https://www.freetutorials.us/bodybuilding-masterclass-1/
+https://www.freetutorials.us/1-leadership-management-essentials/
+https://www.freetutorials.us/productivity-10x-your-complete-guide-to-productivity-1/
+https://www.freetutorials.us/how-hackers-create-undetectable-malware-and-viruses-1/
+https://www.freetutorials.us/1-anatomy-for-figure-drawing-mastering-the-human-figure-1/
+https://www.freetutorials.us/learn-jira-with-real-world-examples-confluence-bonus/
+https://www.freetutorials.us/vue-js-2-the-complete-guide-incl-vue-router-vuex-3/
+https://www.freetutorials.us/vue-js-2-from-beginner-to-professional-includes-vuex-1/
+https://www.freetutorials.us/mysql-sql-and-stored-procedures-from-beginner-to-advanced-1/
+
+https://www.freetutorials.us/write-php-like-a-pro-build-a-php-mvc-framework-from-scratch/
+https://www.freetutorials.us/1-create-a-high-end-social-network-like-twitter-in-php-mysql-6/
+https://www.freetutorials.us/modern-e-commerce-store-in-php-mysqli-with-bootstrap-1/
+https://www.freetutorials.us/1-complete-wordpress-theme-development-course-1/
+https://www.freetutorials.us/the-complete-mysql-developer-course/
+https://www.freetutorials.us/the-most-comprehensive-web-development-course-1/
+https://www.freetutorials.us/create-a-spotify-clone-from-scratch-javascript-php-mysql-1/
+https://www.freetutorials.us/become-a-wordpress-developer-unlocking-power-with-code-1/
+https://www.freetutorials.us/nlp-practitioner-certification-course-beginner-to-advanced-1/
+https://www.freetutorials.us/complete-python-masterclass-6/
+https://www.freetutorials.us/1-php-for-beginners-become-a-php-master-project-included/
+https://www.freetutorials.us/the-complete-php-mysql-professional-course-with-5-projects-2/
+https://www.freetutorials.us/from-0-to-1-machine-learning-nlp-python-cut-to-the-chase/
+https://www.freetutorials.us/1-easy-natural-language-processing-nlp-in-python-1/
+https://www.freetutorials.us/natural-language-processing-with-deep-learning-in-python-2/
+https://www.freetutorials.us/1-machine-learning-a-z-hands-on-python-r-in-data-science-3/
+https://www.freetutorials.us/1-data-science-deep-learning-machine-learning-with-python/
+https://www.freetutorials.us/the-complete-machine-learning-course-with-python-1/
+https://www.freetutorials.us/unsupervised-machine-learning-hidden-markov-models-in-python/
+https://www.freetutorials.us/ensemble-machine-learning-in-python-random-forest-adaboost-1/
+https://www.freetutorials.us/data-science-supervised-machine-learning-in-python-1/
+https://www.freetutorials.us/cluster-analysis-and-unsupervised-machine-learning-in-python-1/
+https://www.freetutorials.us/bayesian-machine-learning-in-python-ab-testing-1/
+
+
+http://websitetips.com/webcontent/
+https://hubskills.com/content-writing-tutorial/
+http://way2inspiration.com/content-writing-tips-for-beginners/
+https://www.entheosweb.com/content_writing/tips.asp
+https://www.enchantingmarketing.com/writing-for-the-web-vs-print/
+http://www.charlottewebdevelopment.com/tutorials/website-content-writing-tutorials/
+https://www.contentfac.com/even-more-web-content-writing-tips/
+https://www.tutorialspoint.com/seo/seo-content-is-the-king.htm
+https://www.wikihow.com/Be-a-Professional-Content-Writer
+https://www.freetutorials.us/writing-with-flair-2-0-the-art-of-exceptional-writing-1/
+https://www.freetutorials.us/editing-mastery-how-to-edit-writing-to-perfection-1/
+https://www.freetutorials.us/ninja-writing-the-four-levels-of-writing-mastery-2/
+https://www.freetutorials.us/writing-with-flair-how-to-become-an-exceptional-writer/
+https://www.lynda.com/Web-Content-Strategy-tutorials/Writing-Web/180104-2.html
+
+https://www.youtube.com/watch?v=wgnUkvMRFsI
+https://www.youtube.com/watch?v=9JGLtl-01nU
+https://www.youtube.com/watch?v=y7cu4iJ6Cso
+
+//plagiarism
+https://www.youtube.com/watch?v=2q0NlWcTq1Y
+https://www.youtube.com/watch?v=EF5eFeJMplA
+https://www.youtube.com/watch?v=UsFcU1PH_8E
+https://www.youtube.com/watch?v=7TNR1xncl6Q
+https://www.youtube.com/watch?v=roSavDjlvxA
+https://www.youtube.com/watch?v=xTW_Hp40p_E
+
+//5875 => 881
+https://paytmmall.com/wd-elements-2-5-inch-2-tb-external-hard-disk-black-cmplxwd_elements_2tb_black-pdp?product_id=15797951&channel=web&discoverability=online&src=grid&svc=2&use_mw=1&tracker=curated%7C%7Cexternal%20harddisk%2Cexternal%20harddisk%7C%7C%2Fg%2Felectronics%2Fpendrives-hard-disks-memory-cards%2Fexternal-hard-disks-glpid-6242%7C6242%7C8%7C
+
+
+http://pm2.keymetrics.io/docs/tutorials/capistrano-like-deployments
+https://www.npmjs.com/package/pm2-windows-service
+https://www.npmjs.com/package/pm2
+https://stackoverflow.com/questions/39143428/how-to-use-redis-node-js-on-a-production-server
+https://blog.cloudboost.io/nodejs-pm2-startup-on-windows-db0906328d75
+https://stackoverflow.com/questions/37729662/laravel-running-queuelisten-continuously-on-windows-azure-web-app
+http://blog.hazaveh.net/2018/01/run-and-monitor-laravel-queue-using-pm2/
+https://stackoverflow.com/questions/28623001/how-to-keep-laravel-queue-system-running-on-server
+
+http://laradock.io/
+https://www.cloudways.com/blog/redis-for-queuing-in-laravel-5/
+https://ph4r05.deadcode.me/blog/2017/12/23/laravel-queues-optimization.html
+https://github.com/gfazioli/Laravel-Artisan-Supervisor-Command
+
+https://laravel-tricks.com/comments
+https://blog.serverdensity.com/monitor-redis/
+https://www.youtube.com/watch?v=M2Ss0oUPBFQ
+
